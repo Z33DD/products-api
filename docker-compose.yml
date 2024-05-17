@@ -1,0 +1,25 @@
+services:
+  eulabsproject:
+    image: eulabsproject
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - DATABASE_DSN="mysql://myuser:mypassword@database:3306/mydatabase?parseTime=true"
+    ports:
+      - 1323:1323
+
+    depends_on:
+      - database
+
+  database:
+    image: mariadb
+    environment:
+      - MARIADB_DATABASE=mydatabase
+      - MARIADB_USER=myuser
+      - MARIADB_PASSWORD=mypassword
+      - MARIADB_ROOT_PASSWORD=123
+    volumes:
+      - ./db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
