@@ -1,16 +1,18 @@
+version: '3'
+
 services:
-  eulabsproject:
-    image: eulabsproject
+  server:
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      - DATABASE_DSN="mysql://myuser:mypassword@database:3306/mydatabase?parseTime=true"
+      - DATABASE_DSN=myuser:mypassword@database:3306/mydatabase?parseTime=true
     ports:
       - 1323:1323
-
     depends_on:
       - database
+    networks:
+      - mynetwork
 
   database:
     image: mariadb
@@ -23,3 +25,8 @@ services:
       - ./db-data:/var/lib/mysql
     ports:
       - 3306:3306
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
